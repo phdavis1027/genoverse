@@ -4,13 +4,12 @@
       ref="cyRef"
       :config="config"
       v-on:mousedown="addNode"
-      v-on:cxttapstart="updateNode"
     >
       <cy-element
         v-for="def in elements"
         :key="`${def.data.id}`"
         :definition="def"
-        v-on:mousedown="deleteNode($event, def.data.id)"
+        v-on:cxttapstart="deleteNode($event, def.data.id)"
       />
     </cytoscape>
   </div>
@@ -109,7 +108,8 @@ export default {
       delete this.$store.getters.getTreeEdges( this.tid)[id]
     },
     deleteNode(event, id) {
-      delete this.$store.getters.getTreeNodes( this.tid)[id]
+      // delete this.$store.getters.getTreeNodes( this.tid)[id]
+      this.$store.commit("removeNode", id)
       console.log("node clicked", id);
       let node = this.$refs.cyRef.instance.$(`#${id}`)
       event.cy.remove(node)

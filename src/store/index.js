@@ -81,13 +81,13 @@ export default new Vuex.Store({
       state.trees.filter((tree) => tree.id == state.activeTree)[0].edges.push(edge)
     },
     removeTree(state) {
-      delete state.activeTree
+      state.trees.filter((tree) => tree.id != state.activeTree)
     },
     removeNode(state, nid) {
-      delete state.activeTree.nodes.filter((n) => n.id != nid)
+      state.trees.filter((tree) => tree.id == state.activeTree)[0].nodes.filter((n) => n.id != nid)
     },
     removeEdge(state, eid) {
-      delete state.activeTree.edges.filter((e) => e.id != eid)
+      state.trees.filter((tree) => tree.id == state.activeTree)[0].edges.filter((e) => e.id != eid)
     }
   },
 })
