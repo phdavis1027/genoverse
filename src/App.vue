@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       config,
-      elements
+      elements,
+      count: 0
     };
   },
   methods: {
@@ -34,10 +35,12 @@ export default {
       console.log(event.target, this.$refs.cyRef.instance);
       if (event.target === this.$refs.cyRef.instance)
         console.log("adding node", event.target);
+        let node = { group: "nodes", data: { id: this.count++ }, renderedPosition: event.renderedPosition }
+        this.elements.push(node)
     },
     deleteNode(event, id) {
       console.log("node clicked", id);
-      var node = this.$refs.cyRef.instance.$(`#${id}`)
+      let node = this.$refs.cyRef.instance.$(`#${id}`)
       event.cy.remove(node)
     },
     updateNode(event) {
@@ -50,6 +53,8 @@ export default {
       // cy: this is the cytoscape instance
       console.log("after created", cy);
     }
+
+
   }
 };
 </script>
