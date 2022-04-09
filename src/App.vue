@@ -3,16 +3,17 @@
     <cytoscape
       ref="cyRef"
       :config="config"
-      v-on:dblclick.native="addNode"
+      v-on:click.native="addNode"
     >
-      <cy-element
+    <cy-element
         v-for="def in elements"
         :key="`${def.data.id}`"
         :definition="def"
-        v-on:cxttapstart="deleteNode($event, def.data.id)"
+        v-on:mouseup="deleteNode($event, def.data.id)"
       />
     </cytoscape>
-  </div>
+
+    </div>
 </template>
 
 <script>
@@ -27,14 +28,44 @@ export default {
       config,
       elements,
       count: 0,
-      tid: 0
+      tid: 0,
+      delMode: false,
+      creMode: false,
     };
   },
   mounted(){
     this.tid = this.$store.getters.getActiveTree
     this.$store.commit("addTree", { id: this.tid, nodes: [], edges: [] })
+    window.addEventListener("keypress", function(e) {
+       if(String.fromCharCode(e.keyCode) == 'd' || String.fromCharCode(e.keyCode) == 'D') {
+         this.setDelMode();
+       } else if (String.fromCharCode(e.keyCode) == 'c' || String.fromCharCode(e.keyCode) == 'C') {
+         this.setCreMode();  
+       }
+       else if (String.fromCharCode(e.keyCode) == 'm' || String.fromCharCode(e.keyCode) == 'M') {
+         this.setMvMode();  
+       }
+    }.bind(this));
   },
   methods: {
+    setCreMode() {
+      if (!this.creMode) {
+            this.creMode = true;
+            this.delMode = false;
+         }
+         else {
+          this.creMode = false;
+         }
+    },
+    setDelMode() {
+      if (!this.delMode) {
+        this.delMode = true;
+        this.creMode = false;
+      }
+      else {
+        this.delMode = false;
+      }
+    },
     storeToCy(tid){
       let nodes = this.$store.getters.getTreeNodes(tid);
       let edges = this.$store.getters.getTreeEdges(tid);
@@ -63,23 +94,25 @@ export default {
 
     },
     addNode(event) {
-      let newNode = {
-        id     : new Date().toString(),
-        name   : "",
-        dob    : "",
-        dod    : "",
-        pob    : "",
-        gender : "",
-        nat    : "",
-        misc   : []
+      if (!this.delMode && this.creMode) {
+        let newNode = {
+          id     : new Date().toString(),
+          name   : "",
+          dob    : "",
+          dod    : "",
+          pob    : "",
+          gender : "",
+          nat    : "",
+          misc   : []
+        }
+        this.$store.commit("addNode", this.tid, newNode)
+        console.log(event.target, this.$refs.cyRef.instance);
+        if (event.target === this.$refs.cyRef.instance)
+          console.log("adding node", event.target);
+          let node = { group: "nodes", data: {id: ++this.count}, renderedPosition: {x: event.x, y: event.y}}
+          console.log(event)
+          this.elements.push(node)
       }
-      this.$store.commit("addNode", this.tid, newNode)
-      console.log(event.target, this.$refs.cyRef.instance);
-      if (event.target === this.$refs.cyRef.instance)
-        console.log("adding node", event.target);
-        let node = { group: "nodes", data: { id: this.count++ }, renderedPosition: { x: event.screenX, y: event.screenY } }
-        console.log(event)
-        this.elements.push(node)
     },
     addEdge(event) {
       let edge = {
@@ -110,10 +143,15 @@ export default {
     },
     deleteNode(event, id) {
       // delete this.$store.getters.getTreeNodes( this.tid)[id]
-      this.$store.commit("removeNode", id)
-      console.log("node clicked", id);
-      let node = this.$refs.cyRef.instance.$(`#${id}`)
-      event.cy.remove(node)
+      if(this.delMode == true) {
+        this.$store.commit("removeNode", id)
+        console.log("removing node clicked", id);
+        console.log(event)
+        let node = this.$refs.cyRef.instance.$(`#${id}`)
+        console.log(node);
+        event.cy.remove(node)
+        
+      }
     },
     updateNode(event) {
       console.log("right click node", event);
