@@ -39,8 +39,8 @@ export default {
     msg: String
   },
   methods:{
-    test(){
-      window.ipcRenderer.send("", 10)
+    storeToCy : function(tid){
+      let tree = this.$store.getters.getTree(tid);  
     }
   }
 }

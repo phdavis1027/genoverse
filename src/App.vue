@@ -30,6 +30,31 @@ export default {
     };
   },
   methods: {
+    storeToCy(tid){
+      let nodes = this.$store.getters.getTreeNodes(tid);
+      let edges = this.$store.getters.getTreeEdges(tid);
+      let config = {}
+      config.elements = []
+      for (let node of nodes){
+        let el = {}
+        el.data = {id : node.id}
+        el.group = "nodes"
+      }
+
+      for (let edge of edges){
+        let el = {}
+        el.data = {
+          id     : edge.id,
+          source : edge.from.id,
+          target : edge.to.id
+        }
+        el.group = "edges"
+      }      
+
+      config.layout = {
+        name : 'grid'
+      }
+    },
     addNode(event) {
       console.log(event.target, this.$refs.cyRef.instance);
       if (event.target === this.$refs.cyRef.instance)
