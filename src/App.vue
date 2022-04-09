@@ -1,32 +1,53 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <cytoscape
+      ref="cyRef"
+      :config="config"
+      v-on:mousedown="addNode"
+      v-on:cxttapstart="updateNode"
+    >
+      <cy-element
+        v-for="def in elements"
+        :key="`${def.data.id}`"
+        :definition="def"
+        v-on:mousedown="deleteNode($event, def.data.id)"
+      />
+    </cytoscape>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import config from "./config";
 
-nav {
-  padding: 30px;
-}
+const elements = [...config.elements];
+delete config.elements;
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default {
+  data() {
+    return {
+      config,
+      elements
+    };
+  },
+  methods: {
+    addNode(event) {
+      console.log(event.target, this.$refs.cyRef.instance);
+      if (event.target === this.$refs.cyRef.instance)
+        console.log("adding node", event.target);
+    },
+    deleteNode(id) {
+      console.log("node clicked", id);
+    },
+    updateNode(event) {
+      console.log("right click node", event);
+    },
+    preConfig(cytoscape) {
+      console.log("calling pre-config", cytoscape);
+    },
+    afterCreated(cy) {
+      // cy: this is the cytoscape instance
+      console.log("after created", cy);
+    }
+  }
+};
+</script>
