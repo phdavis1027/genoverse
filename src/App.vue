@@ -1,5 +1,10 @@
 <template>
-  <div id="app">
+  <div id="app" style="">
+    <p style = "position: fixed; margin-right: 0; text-align: right">some tejjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+      <br>
+      jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+      jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+      jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj {{ this.mode }}</p>
     <input v-model="n1" type="text" name="from" id="from">
     <input v-model="n2" type="text" name="to" id="to">
     <button type="button" name="create" id="create" v-on:click="addEdge">Create Edge</button>
@@ -32,7 +37,8 @@ export default {
       count: 0,
       tid: 0,
       n1: "",
-      n2: ""
+      n2: "",
+      mode: "mode"
     };
   },
   mounted(){
