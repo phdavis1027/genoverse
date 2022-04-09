@@ -18,11 +18,24 @@
     <button type="button" name="create" id="create" v-on:click="addEdge">Create Edge</button> <br>
     <button type="button" name='dfs' id='dfs' v-on:click="dfs">Depth First Search</button> <span style=color:#ffd319>DFS: {{this.output}}</span> <br>
     <button type="button" name="deleteAll" id="deleteAll" v-on:click="deleteAll">Delete All</button>
+    
     <cytoscape
       ref="cyRef"
       :config="config"
-      v-on:click.native="addNode"
+      v-on:click.native="addNode" 
     >
+    <div style="color: #ff901f">
+    <strong>
+      <pre>
+____   ____          ____   ____                        
+\   \ /   /_ __   ___\   \ /   /___ ___.__. ___________ 
+ \   Y   /  |  \_/ __ \   Y   /  _    |  |/ __ \_  __  \
+  \     /|  |  /\  ___/\     (  |_> )___  \  ___/|  | \/
+   \___/ |____/  \___  >\___/ \____// ____|\___  >__|   
+                     \/             \/         \/       
+      </pre>
+    </strong>
+  </div>
     <cy-element
         v-for="def in elements"
         :key="`${def.data.id}`"
@@ -30,7 +43,6 @@
         v-on:mouseup="deleteNode($event, def.data.id)"
       />
     </cytoscape>
-
     </div>
 </template>
 <style>
@@ -183,13 +195,18 @@ export default {
       for(let i = 0; i < visited.length; ++i) {
         if (!visited[i]) this.dfsVisit(visited, pred, i)
       }
+      
+      while (pred.length > 0)
+      {
+        this.output = `${pred.pop()} ` + this.output
+      }
       //this.dfsVisit(visited, this.$store.getters.getTreeNodes[0])
     },
     dfsVisit(visited, pred, i) {
       visited[i] = true
       // await new Promise(r => setTimeout(r, 250))
       // this.$store.get
-      this.output += `${i} `
+      // this.output += `${i} `
 
       let edges = this.$store.getters.getTreeEdges
         .filter((edge) => edge.from == this.$store.getters.getTreeNodes[i].id)
