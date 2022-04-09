@@ -35,8 +35,10 @@ export default {
       if (event.target === this.$refs.cyRef.instance)
         console.log("adding node", event.target);
     },
-    deleteNode(id) {
+    deleteNode(event, id) {
       console.log("node clicked", id);
+      var node = this.$refs.cyRef.instance.$(`#${id}`)
+      event.cy.remove(node)
     },
     updateNode(event) {
       console.log("right click node", event);
