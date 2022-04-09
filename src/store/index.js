@@ -47,7 +47,24 @@ export default new Vuex.Store({
     }
   },
   getters: {
-
+    getTrees(state){
+      return state.trees;
+    },
+    getTree(state, tid){
+      return state.trees[tid];
+    },
+    getTreeNodes(state, tid){
+      return state.trees[tid].nodes;
+    },
+    getTreeNode(state, tid, nid){
+      return state.trees[tid].nodes[nid];
+    },
+    getTreeEdges(state, tid){
+      return state.trees[tid].edges;
+    },
+    getTreeEdge(state, tid, eid){
+      return state.trees[tid].edges[eid]
+    }
   },
   mutations: {
     addTree(state, tree) {
