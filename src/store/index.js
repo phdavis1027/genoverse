@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    trees: {
+    trees: [{
       id: Number,
       nodes: {
         id : {
@@ -44,7 +44,7 @@ export default new Vuex.Store({
           label: String,
         }
       } 
-    }
+    }]
   },
   getters: {
     getTrees(state){
@@ -76,5 +76,14 @@ export default new Vuex.Store({
     addEdge(state, tid, edge) {
       state.trees[tid].edges.push(edge)
     },
+    removeTree(state, tid) {
+      delete state.trees[tid]
+    },
+    removeNode(state, tid, nid) {
+      delete state.trees[tid].nodes[nid]
+    },
+    removeEdge(state, tid, eid) {
+      delete state.trees[tid].edges[eid]
+    }
   },
 })
