@@ -1,10 +1,19 @@
 <template>
   <div id="app" style="">
-    <p style = "position: fixed; margin-right: 0; text-align: right">some tejjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+    <p style = "position: Absolute; top: 0px; right: 10px; border: black dashed 5px; padding: 12.5px"> 
       <br>
-      jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
-      jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
-      jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj {{ this.mode }}</p>
+     Welcome to VueVoyer database visualizer! <br>
+     Dynamically map relationships! <br>
+     <br>
+     <u><strong>Hotkeys:</strong></u> <br>
+     Create Mode: C <br>
+     Delete Mode: D <br>
+     Move Mode: M <br>
+     <br>
+     <u><strong>Create a link:</strong></u> Type two nodes into the text boxes. <br>
+     <br>
+     <strong>Current Mode: </strong> <em>{{this.mode}}</em> <br>
+     <br> </p>
     <input v-model="n1" type="text" name="from" id="from">
     <input v-model="n2" type="text" name="to" id="to">
     <button type="button" name="create" id="create" v-on:click="addEdge">Create Edge</button>
@@ -38,7 +47,7 @@ export default {
       tid: 0,
       n1: "",
       n2: "",
-      mode: "mode"
+      mode: "Create"
     };
   },
   mounted(){
