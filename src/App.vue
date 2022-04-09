@@ -27,18 +27,88 @@ export default {
     return {
       config,
       elements,
-      count: 0
+      count: 0,
+      tid: 0
     };
   },
+  mounted(){
+    this.tid = Math.random()
+  },
   methods: {
+    storeToCy(tid){
+      let nodes = this.$store.getters.getTreeNodes(tid);
+      let edges = this.$store.getters.getTreeEdges(tid);
+      let config = {}
+      config.elements = []
+      for (let node of nodes){
+        let el = {}
+        el.data = {id : node.id}
+        el.group = "nodes"
+      }
+
+      for (let edge of edges){
+        let el = {}
+        el.data = {
+          id     : edge.id,
+          source : edge.from.id,
+          target : edge.to.id
+        }
+        el.group = "edges"
+      }      
+
+      config.layout = {
+        name : 'grid'
+      }
+
+
+    },
     addNode(event) {
+      node = {
+        id     : new Date().toString(),
+        name   : "",
+        dob    : "",
+        dod    : "",
+        pob    : "",
+        gender : "",
+        nat    : "",
+        misc   : []
+      }
+      this.$store.commit("addNode", this.tid, node)
       console.log(event.target, this.$refs.cyRef.instance);
       if (event.target === this.$refs.cyRef.instance)
         console.log("adding node", event.target);
         let node = { group: "nodes", data: { id: this.count++ }, renderedPosition: event.renderedPosition }
         this.elements.push(node)
     },
+    addEdge(event) {
+      edge = {
+        to   : {
+          id : new Date().toString(),
+          dob: "",
+          name: "",
+          dod: "",
+          pob: "",
+          nat: "",
+          misc: []
+        },
+
+        from : {
+          id : new Date().toString(),
+          dob: "",
+          name: "",
+          dod: "",
+          pob: "",
+          nat: "",
+          misc: []
+        },
+        label : "emptyRelationship"
+      }
+    },
+    deleteEdge(id){
+      delete this.$store.getters.getTreeEdges( this.tid)[id]
+    },
     deleteNode(event, id) {
+      delete this.$store.getters.getTreeNodes( this.tid)[id]
       console.log("node clicked", id);
       let node = this.$refs.cyRef.instance.$(`#${id}`)
       event.cy.remove(node)

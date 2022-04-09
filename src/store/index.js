@@ -7,26 +7,25 @@ export default new Vuex.Store({
   state: {
     trees: [{
       id: Number,
-      nodes: [
-        {
+      nodes: {
+        id : {
           id: Number,
           name: String,
-          dob: Date,
-          dod: Date,
+          dob: String,
+          dod: String,
           pob: String,
           gender: String,
           nat: String,
           misc: []
         }
-      ],
-      edges: [
-        {
-          id: Number,
+      },
+      edges: {
+       id: {
           to: {
             id: Number,
             name: String,
-            dob: Date,
-            dod: Date,
+            dob: String,
+            dod: String,
             pob: String,
             gender: String,
             nat: String,
@@ -35,8 +34,8 @@ export default new Vuex.Store({
           from: {
             id: Number,
             name: String,
-            dob: Date,
-            dod: Date,
+            dob: String,
+            dod: String,
             pob: String,
             gender: String,
             nat: String,
@@ -44,7 +43,7 @@ export default new Vuex.Store({
           },
           label: String,
         }
-      ]
+      } 
     }]
   },
   getters: {
@@ -72,7 +71,7 @@ export default new Vuex.Store({
       state.trees.push(tree)
     },
     addNode(state, tid, node) {
-      state.trees[tid].nodes.push(node)
+      state.trees[tid].nodes[node.id] = node
     },
     addEdge(state, tid, edge) {
       state.trees[tid].edges.push(edge)
@@ -87,6 +86,4 @@ export default new Vuex.Store({
       delete state.trees[tid].edges[eid]
     }
   },
-  // actions: {
-  // },
 })
