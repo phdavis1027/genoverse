@@ -50,7 +50,7 @@ export default {
       creMode: false,
       n1: "",
       n2: "",
-      mode: "Create",
+      mode: "Move",
       output: ""
     };
   },
@@ -73,18 +73,22 @@ export default {
       if (!this.creMode) {
             this.creMode = true;
             this.delMode = false;
+            this.mode = "Create"
          }
          else {
           this.creMode = false;
+          this.mode = "Move"
          }
     },
     setDelMode() {
       if (!this.delMode) {
         this.delMode = true;
         this.creMode = false;
+        this.mode = "Delete"
       }
       else {
         this.delMode = false;
+        this.mode = "Move"
       }
     },
     storeToCy(tid){
