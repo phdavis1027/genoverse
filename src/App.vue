@@ -33,6 +33,7 @@ export default {
   },
   mounted(){
     this.tid = this.$store.getters.getActiveTree
+    this.$store.commit("addTree", { id: this.tid, nodes: [], edges: [] })
   },
   methods: {
     storeToCy(tid){

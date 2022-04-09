@@ -74,20 +74,20 @@ export default new Vuex.Store({
     addTree(state, tree) {
       state.trees.push(tree)
     },
-    addNode(state, tid, node) {
-      state.trees[tid].nodes.push(node)
+    addNode(state, node) {
+      state.trees.filter((tree) => tree.id == state.activeTree)[0].nodes.push(node)
     },
-    addEdge(state, tid, edge) {
-      state.trees[tid].edges.push(edge)
+    addEdge(state, edge) {
+      state.trees.filter((tree) => tree.id == state.activeTree)[0].edges.push(edge)
     },
-    removeTree(state, tid) {
-      delete state.trees[tid]
+    removeTree(state) {
+      delete state.activeTree
     },
-    removeNode(state, tid, nid) {
-      delete state.trees[tid].nodes[nid]
+    removeNode(state, nid) {
+      delete state.activeTree.nodes.filter((n) => n.id != nid)
     },
-    removeEdge(state, tid, eid) {
-      delete state.trees[tid].edges[eid]
+    removeEdge(state, eid) {
+      delete state.activeTree.edges.filter((e) => e.id != eid)
     }
   },
 })
