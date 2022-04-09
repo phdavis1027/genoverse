@@ -8,7 +8,6 @@
      <u><strong>Hotkeys:</strong></u> <br>
      Create Mode: C <br>
      Delete Mode: D <br>
-     Move Mode: M <br>
      <br>
      <u><strong>Create a link:</strong></u> Type two nodes into the text boxes. <br>
      <br>
@@ -17,7 +16,7 @@
     <input v-model="n1" type="text" name="from" id="from">
     <input v-model="n2" type="text" name="to" id="to">
     <button type="button" name="create" id="create" v-on:click="addEdge">Create Edge</button> <br>
-    <button type="button" name='dfs' id='dfs' v-on:click="dfs">Depth First Search</button> <span>DFS: {{this.output}}</span>
+    <button type="button" name='dfs' id='dfs' v-on:click="dfs">Depth First Search</button> <span style=color:#ffd319>DFS: {{this.output}}</span>
     <cytoscape
       ref="cyRef"
       :config="config"
