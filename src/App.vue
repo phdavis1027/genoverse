@@ -32,7 +32,7 @@ export default {
     };
   },
   mounted(){
-    this.tid = Math.random()
+    this.tid = this.$store.getters.getActiveTree
   },
   methods: {
     storeToCy(tid){
@@ -63,7 +63,7 @@ export default {
 
     },
     addNode(event) {
-      node = {
+      let newNode = {
         id     : new Date().toString(),
         name   : "",
         dob    : "",
@@ -73,7 +73,7 @@ export default {
         nat    : "",
         misc   : []
       }
-      this.$store.commit("addNode", this.tid, node)
+      this.$store.commit("addNode", this.tid, newNode)
       console.log(event.target, this.$refs.cyRef.instance);
       if (event.target === this.$refs.cyRef.instance)
         console.log("adding node", event.target);
@@ -81,7 +81,7 @@ export default {
         this.elements.push(node)
     },
     addEdge(event) {
-      edge = {
+      let edge = {
         to   : {
           id : new Date().toString(),
           dob: "",

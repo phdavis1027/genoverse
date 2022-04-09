@@ -5,10 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    activeTree: 0,
     trees: [{
       id: Number,
-      nodes: {
-        id : {
+      nodes: [
+        {
           id: Number,
           name: String,
           dob: String,
@@ -18,9 +19,9 @@ export default new Vuex.Store({
           nat: String,
           misc: []
         }
-      },
-      edges: {
-       id: {
+      ],
+      edges: [
+        {
           to: {
             id: Number,
             name: String,
@@ -43,7 +44,7 @@ export default new Vuex.Store({
           },
           label: String,
         }
-      } 
+      ]
     }]
   },
   getters: {
@@ -64,6 +65,9 @@ export default new Vuex.Store({
     },
     getTreeEdge(state, tid, eid){
       return state.trees[tid].edges[eid]
+    },
+    getActiveTree(state) {
+      return state.activeTree
     }
   },
   mutations: {
@@ -71,7 +75,7 @@ export default new Vuex.Store({
       state.trees.push(tree)
     },
     addNode(state, tid, node) {
-      state.trees[tid].nodes[node.id] = node
+      state.trees[tid].nodes.push(node)
     },
     addEdge(state, tid, edge) {
       state.trees[tid].edges.push(edge)
