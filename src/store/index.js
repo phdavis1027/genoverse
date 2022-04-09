@@ -5,10 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    activeTree: 0,
     trees: [{
       id: Number,
-      nodes: {
-        id : {
+      nodes: [
+        {
           id: Number,
           name: String,
           dob: String,
@@ -18,9 +19,9 @@ export default new Vuex.Store({
           nat: String,
           misc: []
         }
-      },
-      edges: {
-       id: {
+      ],
+      edges: [
+        {
           to: {
             id: Number,
             name: String,
@@ -43,7 +44,7 @@ export default new Vuex.Store({
           },
           label: String,
         }
-      } 
+      ]
     }]
   },
   getters: {
@@ -53,37 +54,40 @@ export default new Vuex.Store({
     getTree(state, tid){
       return state.trees[tid];
     },
-    getTreeNodes(state, tid){
-      return state.trees[tid].nodes;
+    getTreeNodes(state){
+      return state.trees.filter((tree) => tree.id == state.activeTree)[0].nodes
     },
-    getTreeNode(state, tid, nid){
-      return state.trees[tid].nodes[nid];
+    getTreeNode(state, nid){
+      // return state.trees.filter((tree) => tree.id == state.activeTree)[0].nodes.filter((n) => n.id != nid)
     },
     getTreeEdges(state, tid){
       return state.trees[tid].edges;
     },
     getTreeEdge(state, tid, eid){
       return state.trees[tid].edges[eid]
+    },
+    getActiveTree(state) {
+      return state.activeTree
     }
   },
   mutations: {
     addTree(state, tree) {
       state.trees.push(tree)
     },
-    addNode(state, tid, node) {
-      state.trees[tid].nodes[node.id] = node
+    addNode(state, node) {
+      state.trees.filter((tree) => tree.id == state.activeTree)[0].nodes.push(node)
     },
-    addEdge(state, tid, edge) {
-      state.trees[tid].edges.push(edge)
+    addEdge(state, edge) {
+      state.trees.filter((tree) => tree.id == state.activeTree)[0].edges.push(edge)
     },
-    removeTree(state, tid) {
-      delete state.trees[tid]
+    removeTree(state) {
+      state.trees.filter((tree) => tree.id != state.activeTree)
     },
-    removeNode(state, tid, nid) {
-      delete state.trees[tid].nodes[nid]
+    removeNode(state, nid) {
+      state.trees.filter((tree) => tree.id == state.activeTree)[0].nodes.filter((n) => n.id != nid)
     },
-    removeEdge(state, tid, eid) {
-      delete state.trees[tid].edges[eid]
+    removeEdge(state, eid) {
+      state.trees.filter((tree) => tree.id == state.activeTree)[0].edges.filter((e) => e.id != eid)
     }
   },
 })
