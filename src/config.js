@@ -27,13 +27,13 @@ const config = {
     style: [
       {
         selector: "node",
-        style: { "background-color": "#666", label: "data(id)" }
+        style: { "background-color": "#ff2975", label: "data(id)", color: "#ffffff"}
       },
       {
         selector: "edge",
         style: {
           width: 3,
-          "line-color": "#ccc",
+          "line-color": "#f222ff",
           "target-arrow-color": "#ccc",
           "target-arrow-shape": "triangle"
         }
