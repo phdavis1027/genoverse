@@ -82,7 +82,7 @@ export default {
       console.log(event.target, this.$refs.cyRef.instance);
       if (event.target === this.$refs.cyRef.instance)
         console.log("adding node", event.target);
-        let node = { group: "nodes", data: { id: this.count++ }, renderedPosition: { x: event.screenX, y: event.screenY } }
+        let node = { group: "nodes", data: { id: ++this.count }, renderedPosition: { x: event.screenX, y: event.screenY } }
         console.log(event)
         this.elements.push(node)
     },
@@ -90,7 +90,6 @@ export default {
       let treeNodes = this.$store.getters.getTreeNodes
       let edge = {
         to   : treeNodes.filter((node) => node.id == this.n2),
-
         from : treeNodes.filter((node) => node.id == this.n1),
         label : ""
       }
