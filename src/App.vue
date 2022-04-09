@@ -16,7 +16,8 @@
      <br> </p>
     <input v-model="n1" type="text" name="from" id="from">
     <input v-model="n2" type="text" name="to" id="to">
-    <button type="button" name="create" id="create" v-on:click="addEdge">Create Edge</button>
+    <button type="button" name="create" id="create" v-on:click="addEdge">Create Edge</button> <br>
+    <button type="button" name='dfs' id='dfs' v-on:click="dfs">Depth First Search</button> <span>DFS: {{this.output}}</span>
     <cytoscape
       ref="cyRef"
       :config="config"
@@ -47,7 +48,8 @@ export default {
       tid: 0,
       n1: "",
       n2: "",
-      mode: "Create"
+      mode: "Create",
+      output: ""
     };
   },
   mounted(){
@@ -123,6 +125,7 @@ export default {
       this.$store.commit("removeNode", id)
       console.log("node clicked", id);
       let node = this.$refs.cyRef.instance.$(`#${id}`)
+      console.log(event)
       event.cy.remove(node)
     },
     updateNode(event) {
@@ -134,9 +137,36 @@ export default {
     afterCreated(cy) {
       // cy: this is the cytoscape instance
       console.log("after created", cy);
+    },
+    dfs() {
+      this.output = ""
+      let visited = new Array(this.$store.getters.getTreeNodes.length)
+      let pred = new Array(this.$store.getters.getTreeNodes.length) 
+      for(let i = 0; i < visited.length; ++i) {
+        if (!visited[i]) this.dfsVisit(visited, pred, i)
+      }
+      //this.dfsVisit(visited, this.$store.getters.getTreeNodes[0])
+    },
+    dfsVisit(visited, pred, i) {
+      visited[i] = true
+      // await new Promise(r => setTimeout(r, 250))
+      // this.$store.get
+      this.output += `${i} `
+
+      let edges = this.$store.getters.getTreeEdges
+        .filter((edge) => edge.from == this.$store.getters.getTreeNodes[i].id)
+
+      for (let j = 0; j < edges.length; ++j) {
+        if (!visited[j]) {
+          pred[j] = i
+          this.dfsVisit(visited, pred, j)
+        }
+      }
+    },
+
+    animateNode(id){
+      this.$cyref
     }
-
-
   }
 };
 </script>

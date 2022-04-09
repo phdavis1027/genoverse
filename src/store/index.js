@@ -56,10 +56,10 @@ export default new Vuex.Store({
       return state.trees[tid];
     },
     getTreeNodes(state){
-      return state.trees.filter((tree) => tree.id == state.activeTree)[0].nodes
+      return state.trees.filter((tree) => tree.id === state.activeTree)[0].nodes
     },
     getTreeEdges(state, tid){
-      return state.trees[tid].edges;
+      return state.trees.filter((tree) => tree.id === state.activeTree)[0].edges
     },
     getActiveTree(state) {
       return state.activeTree
