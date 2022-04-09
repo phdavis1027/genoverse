@@ -3,14 +3,13 @@
     <cytoscape
       ref="cyRef"
       :config="config"
-      v-on:mousedown="addNode"
-      v-on:cxttapstart="updateNode"
+      v-on:dblclick.native="addNode"
     >
       <cy-element
         v-for="def in elements"
         :key="`${def.data.id}`"
         :definition="def"
-        v-on:mousedown="deleteNode($event, def.data.id)"
+        v-on:cxttapstart="deleteNode($event, def.data.id)"
       />
     </cytoscape>
   </div>
@@ -27,11 +26,13 @@ export default {
     return {
       config,
       elements,
-      tid
+      count: 0,
+      tid: 0
     };
   },
   mounted(){
-    this.tid = Math.random()
+    this.tid = this.$store.getters.getActiveTree
+    this.$store.commit("addTree", { id: this.tid, nodes: [], edges: [] })
   },
   methods: {
     storeToCy(tid){
@@ -62,8 +63,8 @@ export default {
 
     },
     addNode(event) {
-      node = {
-        id     : hash(new Date()),
+      let newNode = {
+        id     : new Date().toString(),
         name   : "",
         dob    : "",
         dod    : "",
@@ -72,12 +73,18 @@ export default {
         nat    : "",
         misc   : []
       }
-      this.$store.mutations.addNode(state, this.tid, node)
+      this.$store.commit("addNode", this.tid, newNode)
+      console.log(event.target, this.$refs.cyRef.instance);
+      if (event.target === this.$refs.cyRef.instance)
+        console.log("adding node", event.target);
+        let node = { group: "nodes", data: { id: this.count++ }, renderedPosition: { x: event.screenX, y: event.screenY } }
+        console.log(event)
+        this.elements.push(node)
     },
     addEdge(event) {
-      edge = {
+      let edge = {
         to   : {
-          id : hash(new Date()),
+          id : new Date().toString(),
           dob: "",
           name: "",
           dod: "",
@@ -87,7 +94,7 @@ export default {
         },
 
         from : {
-          id : hash(new Date()),
+          id : new Date().toString(),
           dob: "",
           name: "",
           dod: "",
@@ -99,10 +106,14 @@ export default {
       }
     },
     deleteEdge(id){
-      delete this.$store.getters.getTreeEdges(state, this.tid)[id]
+      delete this.$store.getters.getTreeEdges( this.tid)[id]
     },
-    deleteNode(id) {
-      delete this.$store.getters.getNodes(state, this.tid)[id]
+    deleteNode(event, id) {
+      // delete this.$store.getters.getTreeNodes( this.tid)[id]
+      this.$store.commit("removeNode", id)
+      console.log("node clicked", id);
+      let node = this.$refs.cyRef.instance.$(`#${id}`)
+      event.cy.remove(node)
     },
     updateNode(event) {
       console.log("right click node", event);
@@ -114,6 +125,8 @@ export default {
       // cy: this is the cytoscape instance
       console.log("after created", cy);
     }
+
+
   }
 };
 </script>
