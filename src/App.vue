@@ -1,9 +1,9 @@
 <template>
   <div id="app" style="background-color: #8c1eff">
-    <p style = "position: Absolute; top: 0px; right: 10px; border: #ff901f dashed 5px; padding: 12.5px; color: #ffd319"> 
+    <p style = "text-align: center; position: Absolute; top: 0px; right: 10px; border: #ff901f dashed 5px; padding: 12.5px; color: #ffd319"> 
       <br>
-     Welcome to VueVoyer database visualizer! <br>
-     Dynamically map relationships! <br>
+     <strong>~ Welcome to VueVoyer database visualizer! ~</strong> <br>
+     Dynamically map relationships! <br> 
      <br>
      <u><strong>Hotkeys:</strong></u> <br>
      Create Mode: C <br>
@@ -15,16 +15,16 @@
      <br> </p>
     <input v-model="n1" type="text" name="from" id="from" style=background-color:#ff901f>
     <input v-model="n2" type="text" name="to" id="to" style=background-color:#ff901f>
-    <button type="button" name="create" id="create" v-on:click="addEdge" style="background-color: #ff901ff">Create Edge</button> <br>
-    <button type="button" name='dfs' id='dfs' v-on:click="dfs">Depth First Search</button> <span style=color:#ffd319>DFS: {{this.output}}</span> <br>
-    <button type="button" name="deleteAll" id="deleteAll" v-on:click="deleteAll">Delete All</button>
+    <button type="button" style="background-color: #ff901f; border-color: #ff901f" name="create" id="create" v-on:click="addEdge">Create Edge</button> <br>
+    <button type="button" style="background-color: #ff901f; border-color: #ff901f" name='dfs' id='dfs' v-on:click="dfs">Depth First Search</button> <span style=color:#ffd319>DFS: {{this.output}}</span> <br>
+    <button type="button" style="background-color: #ff901f; border-color: #ff901f" name="deleteAll" id="deleteAll" v-on:click="deleteAll">Delete All</button>
     
     <cytoscape
       ref="cyRef"
       :config="config"
       v-on:click.native="addNode" 
     >
-    <div style="color: #ff901f">
+    <div style="color: #ff901f; position: Absolute; bottom: 0px; Left: 0px;">
     <strong>
       <pre>
 ____   ____          ____   ____                        
@@ -44,6 +44,7 @@ ____   ____          ____   ____
       />
     </cytoscape>
     </div>
+       
 </template>
 <style>
 body {
@@ -231,3 +232,9 @@ export default {
   }
 };
 </script>
+<style>
+
+#app{
+  position: relative;
+}
+</style>
