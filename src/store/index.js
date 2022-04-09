@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    output: "",
     activeTree: 0,
     trees: [{
       id: Number,
@@ -54,17 +55,11 @@ export default new Vuex.Store({
     getTree(state, tid){
       return state.trees[tid];
     },
-    getTreeNodes(state, tid){
-      return state.trees[tid].nodes;
-    },
-    getTreeNode(state, tid, nid){
-      return state.trees[tid].nodes[nid];
+    getTreeNodes(state){
+      return state.trees.filter((tree) => tree.id === state.activeTree)[0].nodes
     },
     getTreeEdges(state, tid){
-      return state.trees[tid].edges;
-    },
-    getTreeEdge(state, tid, eid){
-      return state.trees[tid].edges[eid]
+      return state.trees.filter((tree) => tree.id === state.activeTree)[0].edges
     },
     getActiveTree(state) {
       return state.activeTree

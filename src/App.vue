@@ -1,5 +1,23 @@
 <template>
-  <div id="app">
+  <div id="app" style="">
+    <p style = "position: Absolute; top: 0px; right: 10px; border: black dashed 5px; padding: 12.5px"> 
+      <br>
+     Welcome to VueVoyer database visualizer! <br>
+     Dynamically map relationships! <br>
+     <br>
+     <u><strong>Hotkeys:</strong></u> <br>
+     Create Mode: C <br>
+     Delete Mode: D <br>
+     Move Mode: M <br>
+     <br>
+     <u><strong>Create a link:</strong></u> Type two nodes into the text boxes. <br>
+     <br>
+     <strong>Current Mode: </strong> <em>{{this.mode}}</em> <br>
+     <br> </p>
+    <input v-model="n1" type="text" name="from" id="from">
+    <input v-model="n2" type="text" name="to" id="to">
+    <button type="button" name="create" id="create" v-on:click="addEdge">Create Edge</button> <br>
+    <button type="button" name='dfs' id='dfs' v-on:click="dfs">Depth First Search</button> <span>DFS: {{this.output}}</span>
     <cytoscape
       ref="cyRef"
       :config="config"
@@ -31,6 +49,10 @@ export default {
       tid: 0,
       delMode: false,
       creMode: false,
+      n1: "",
+      n2: "",
+      mode: "Create",
+      output: ""
     };
   },
   mounted(){
@@ -106,37 +128,23 @@ export default {
           misc   : []
         }
         this.$store.commit("addNode", this.tid, newNode)
-        console.log(event.target, this.$refs.cyRef.instance);
-        if (event.target === this.$refs.cyRef.instance)
-          console.log("adding node", event.target);
-          let node = { group: "nodes", data: {id: ++this.count}, renderedPosition: {x: event.x, y: event.y}}
-          console.log(event)
+          let node = { group: "nodes", data: {id: ++this.count}, renderedPosition: {x: event.offsetX, y: event.offsetY}}
           this.elements.push(node)
       }
     },
     addEdge(event) {
+      let treeNodes = this.$store.getters.getTreeNodes
       let edge = {
-        to   : {
-          id : new Date().toString(),
-          dob: "",
-          name: "",
-          dod: "",
-          pob: "",
-          nat: "",
-          misc: []
-        },
-
-        from : {
-          id : new Date().toString(),
-          dob: "",
-          name: "",
-          dod: "",
-          pob: "",
-          nat: "",
-          misc: []
-        },
-        label : "emptyRelationship"
+        to   : treeNodes.filter((node) => node.id == this.n2),
+        from : treeNodes.filter((node) => node.id == this.n1),
+        label : ""
       }
+      this.$store.commit("addEdge", edge)
+      let newEdge = {
+        data: { id: `${this.n1}${this.n2}`, source: this.n1, target: this.n2 },
+        group : "edges"
+      }
+      this.elements.push(newEdge)
     },
     deleteEdge(id){
       delete this.$store.getters.getTreeEdges( this.tid)[id]
@@ -145,10 +153,7 @@ export default {
       // delete this.$store.getters.getTreeNodes( this.tid)[id]
       if(this.delMode == true) {
         this.$store.commit("removeNode", id)
-        console.log("removing node clicked", id);
-        console.log(event)
         let node = this.$refs.cyRef.instance.$(`#${id}`)
-        console.log(node);
         event.cy.remove(node)
         
       }
@@ -162,9 +167,36 @@ export default {
     afterCreated(cy) {
       // cy: this is the cytoscape instance
       console.log("after created", cy);
+    },
+    dfs() {
+      this.output = ""
+      let visited = new Array(this.$store.getters.getTreeNodes.length)
+      let pred = new Array(this.$store.getters.getTreeNodes.length) 
+      for(let i = 0; i < visited.length; ++i) {
+        if (!visited[i]) this.dfsVisit(visited, pred, i)
+      }
+      //this.dfsVisit(visited, this.$store.getters.getTreeNodes[0])
+    },
+    dfsVisit(visited, pred, i) {
+      visited[i] = true
+      // await new Promise(r => setTimeout(r, 250))
+      // this.$store.get
+      this.output += `${i} `
+
+      let edges = this.$store.getters.getTreeEdges
+        .filter((edge) => edge.from == this.$store.getters.getTreeNodes[i].id)
+
+      for (let j = 0; j < edges.length; ++j) {
+        if (!visited[j]) {
+          pred[j] = i
+          this.dfsVisit(visited, pred, j)
+        }
+      }
+    },
+
+    animateNode(id){
+      this.$cyref
     }
-
-
   }
 };
 </script>
