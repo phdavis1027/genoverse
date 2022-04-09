@@ -33,7 +33,11 @@
 
     </div>
 </template>
-
+<style>
+body {
+  background-color: #8c1eff;
+}
+</style>
 <script>
 import config from "./config";
 
