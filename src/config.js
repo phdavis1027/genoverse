@@ -37,7 +37,13 @@ const config = {
           "target-arrow-color": "#ccc",
           "target-arrow-shape": "triangle"
         }
-      }
+      },
+    //   {
+    //       selector : 'node[id = "1"]',
+    //       style: {
+    //           width : 
+    //       }
+    //   }
     ],
     layout: { name: "grid", rows: 1 }
   };
