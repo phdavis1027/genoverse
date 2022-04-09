@@ -1,9 +1,12 @@
 <template>
   <div id="app">
+    <input v-model="n1" type="text" name="from" id="from">
+    <input v-model="n2" type="text" name="to" id="to">
+    <button type="button" name="create" id="create" v-on:click="addEdge">Create Edge</button>
     <cytoscape
       ref="cyRef"
       :config="config"
-      v-on:dblclick.native="addNode"
+      v-on:click.native="addNode"
     >
       <cy-element
         v-for="def in elements"
@@ -27,7 +30,9 @@ export default {
       config,
       elements,
       count: 0,
-      tid: 0
+      tid: 0,
+      n1: "",
+      n2: ""
     };
   },
   mounted(){
@@ -82,28 +87,19 @@ export default {
         this.elements.push(node)
     },
     addEdge(event) {
+      let treeNodes = this.$store.getters.getTreeNodes
       let edge = {
-        to   : {
-          id : new Date().toString(),
-          dob: "",
-          name: "",
-          dod: "",
-          pob: "",
-          nat: "",
-          misc: []
-        },
+        to   : treeNodes.filter((node) => node.id == this.n2),
 
-        from : {
-          id : new Date().toString(),
-          dob: "",
-          name: "",
-          dod: "",
-          pob: "",
-          nat: "",
-          misc: []
-        },
-        label : "emptyRelationship"
+        from : treeNodes.filter((node) => node.id == this.n1),
+        label : ""
       }
+      this.$store.commit("addEdge", edge)
+      let newEdge = {
+        data: { id: `${this.n1}${this.n2}`, source: this.n1, target: this.n2 },
+        group : "edges"
+      }
+      this.elements.push(newEdge)
     },
     deleteEdge(id){
       delete this.$store.getters.getTreeEdges( this.tid)[id]
