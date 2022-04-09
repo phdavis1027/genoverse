@@ -26,8 +26,12 @@ export default {
   data() {
     return {
       config,
-      elements
+      elements,
+      tid
     };
+  },
+  mounted(){
+    this.tid = Math.random()
   },
   methods: {
     storeToCy(tid){
@@ -54,14 +58,51 @@ export default {
       config.layout = {
         name : 'grid'
       }
+
+
     },
     addNode(event) {
-      console.log(event.target, this.$refs.cyRef.instance);
-      if (event.target === this.$refs.cyRef.instance)
-        console.log("adding node", event.target);
+      node = {
+        id     : hash(new Date()),
+        name   : "",
+        dob    : "",
+        dod    : "",
+        pob    : "",
+        gender : "",
+        nat    : "",
+        misc   : []
+      }
+      this.$store.mutations.addNode(state, this.tid, node)
+    },
+    addEdge(event) {
+      edge = {
+        to   : {
+          id : hash(new Date()),
+          dob: "",
+          name: "",
+          dod: "",
+          pob: "",
+          nat: "",
+          misc: []
+        },
+
+        from : {
+          id : hash(new Date()),
+          dob: "",
+          name: "",
+          dod: "",
+          pob: "",
+          nat: "",
+          misc: []
+        },
+        label : "emptyRelationship"
+      }
+    },
+    deleteEdge(id){
+      delete this.$store.getters.getTreeEdges(state, this.tid)[id]
     },
     deleteNode(id) {
-      console.log("node clicked", id);
+      delete this.$store.getters.getNodes(state, this.tid)[id]
     },
     updateNode(event) {
       console.log("right click node", event);

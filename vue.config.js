@@ -5,5 +5,5 @@ module.exports = defineConfig({
     electronBuilder: {
       preload: './preload.js'
     }
-  }
+  },
 })
