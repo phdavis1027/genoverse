@@ -32,10 +32,16 @@
 </template>
 
 <script>
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  methods:{
+    test(){
+      window.ipcRenderer.send("", 10)
+    }
   }
 }
 </script>
