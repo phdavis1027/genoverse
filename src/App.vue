@@ -1,6 +1,6 @@
 <template>
-  <div id="app" style="">
-    <p style = "position: Absolute; top: 0px; right: 10px; border: black dashed 5px; padding: 12.5px"> 
+  <div id="app" style="background-color: #8c1eff">
+    <p style = "position: Absolute; top: 0px; right: 10px; border: #ff901f dashed 5px; padding: 12.5px; color: #ffd319"> 
       <br>
      Welcome to VueVoyer database visualizer! <br>
      Dynamically map relationships! <br>
