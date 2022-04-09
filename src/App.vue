@@ -3,7 +3,7 @@
     <cytoscape
       ref="cyRef"
       :config="config"
-      v-on:mousedown="addNode"
+      v-on:dblclick.native="addNode"
     >
       <cy-element
         v-for="def in elements"
@@ -77,7 +77,8 @@ export default {
       console.log(event.target, this.$refs.cyRef.instance);
       if (event.target === this.$refs.cyRef.instance)
         console.log("adding node", event.target);
-        let node = { group: "nodes", data: { id: this.count++ }, renderedPosition: event.renderedPosition }
+        let node = { group: "nodes", data: { id: this.count++ }, renderedPosition: { x: event.screenX, y: event.screenY } }
+        console.log(event)
         this.elements.push(node)
     },
     addEdge(event) {
