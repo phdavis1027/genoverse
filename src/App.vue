@@ -26,17 +26,83 @@ export default {
   data() {
     return {
       config,
-      elements
+      elements,
+      tid
     };
   },
+  mounted(){
+    this.tid = Math.random()
+  },
   methods: {
+    storeToCy(tid){
+      let nodes = this.$store.getters.getTreeNodes(tid);
+      let edges = this.$store.getters.getTreeEdges(tid);
+      let config = {}
+      config.elements = []
+      for (let node of nodes){
+        let el = {}
+        el.data = {id : node.id}
+        el.group = "nodes"
+      }
+
+      for (let edge of edges){
+        let el = {}
+        el.data = {
+          id     : edge.id,
+          source : edge.from.id,
+          target : edge.to.id
+        }
+        el.group = "edges"
+      }      
+
+      config.layout = {
+        name : 'grid'
+      }
+
+
+    },
     addNode(event) {
-      console.log(event.target, this.$refs.cyRef.instance);
-      if (event.target === this.$refs.cyRef.instance)
-        console.log("adding node", event.target);
+      node = {
+        id     : hash(new Date()),
+        name   : "",
+        dob    : "",
+        dod    : "",
+        pob    : "",
+        gender : "",
+        nat    : "",
+        misc   : []
+      }
+      this.$store.mutations.addNode(state, this.tid, node)
+    },
+    addEdge(event) {
+      edge = {
+        to   : {
+          id : hash(new Date()),
+          dob: "",
+          name: "",
+          dod: "",
+          pob: "",
+          nat: "",
+          misc: []
+        },
+
+        from : {
+          id : hash(new Date()),
+          dob: "",
+          name: "",
+          dod: "",
+          pob: "",
+          nat: "",
+          misc: []
+        },
+        label : "emptyRelationship"
+      }
+    },
+    deleteEdge(id){
+      delete this.$store.getters.getTreeEdges(state, this.tid)[id]
     },
     deleteNode(id) {
-      console.log("node clicked", id);
+      delete this.$store.getters.getNodes(state, this.tid)[id]
     },
     updateNode(event) {
       console.log("right click node", event);

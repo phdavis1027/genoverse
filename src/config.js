@@ -18,6 +18,10 @@ const config = {
       {
         data: { id: "ab", source: "a", target: "b" },
         group: "edges"
+      },
+      {
+        data: { id: "ac", source: "a", target: "c" },
+        group : "edges"
       }
     ],
     style: [
