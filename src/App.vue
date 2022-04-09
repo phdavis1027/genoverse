@@ -13,8 +13,8 @@
      <br>
      <strong>Current Mode: </strong> <em>{{this.mode}}</em> <br>
      <br> </p>
-    <input v-model="n1" type="text" name="from" id="from">
-    <input v-model="n2" type="text" name="to" id="to">
+    <input v-model="n1" type="text" name="from" id="from" style=background-color:#ff901f>
+    <input v-model="n2" type="text" name="to" id="to" style=background-color:#ff901f>
     <button type="button" name="create" id="create" v-on:click="addEdge">Create Edge</button> <br>
     <button type="button" name='dfs' id='dfs' v-on:click="dfs">Depth First Search</button> <span style=color:#ffd319>DFS: {{this.output}}</span> <br>
     <button type="button" name="deleteAll" id="deleteAll" v-on:click="deleteAll">Delete All</button>
